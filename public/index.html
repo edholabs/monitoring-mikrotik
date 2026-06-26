@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZAFALINK Technology - Premium Multi-Interface Monitor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0b0f19; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #ef4444; }
+    </style>
+</head>
+<body class="bg-[#0b0f17] text-gray-200 font-sans antialiased">
+
+    <div class="container mx-auto px-4 py-6 max-w-7xl">
+        
+        <header class="mb-8 border-b border-gray-800/60 pb-5 flex justify-between items-center tracking-wide">
+            <div>
+                <h1 class="text-3xl font-extrabold tracking-wider bg-gradient-to-r from-red-500 via-purple-500 to-blue-500 bg-clip-text text-transparent">
+                    ZAFALINK TECHNOLOGY
+                </h1>
+                <p class="text-xs uppercase tracking-widest text-gray-500 font-semibold mt-1">
+                   GORONTALO MONITORING REALTIME
+                </p>
+            </div>
+            <div class="text-right">
+                <span id="router-model" class="border border-blue-500/30 bg-blue-950/40 text-blue-400 text-xs font-mono px-3 py-1 rounded-md shadow-[0_0_15px_rgba(59,130,246,0.1)]">
+                    CONNECTING...
+                </span>
+                <p id="router-uptime" class="text-xs font-mono text-gray-500 mt-2">Uptime: --</p>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-[#121824] p-6 rounded-xl border border-red-500/10 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-gray-400 text-xs font-bold uppercase tracking-wider">CPU Load</h3>
+                    <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse shadow-[0_0_8px_#ef4444]"></span>
+                </div>
+                <div class="flex items-baseline mt-4">
+                    <span id="cpu-text" class="text-5xl font-black text-white tracking-tight">0%</span>
+                </div>
+                <div class="w-full bg-[#1e293b] rounded-full h-2 mt-5 overflow-hidden">
+                    <div id="cpu-bar" class="bg-gradient-to-r from-red-600 to-red-400 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div class="bg-[#121824] p-6 rounded-xl border border-blue-500/10 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-gray-400 text-xs font-bold uppercase tracking-wider">Free Memory</h3>
+                    <span class="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_#3b82f6]"></span>
+                </div>
+                <div class="flex items-baseline mt-4">
+                    <span id="memory-text" class="text-5xl font-black text-white tracking-tight">0 MB</span>
+                </div>
+                <p id="memory-total" class="text-xs font-mono text-gray-500 mt-5 bg-[#1a2333] inline-block px-2 py-0.5 rounded">Total: -- MB</p>
+            </div>
+
+            <div class="bg-[#121824] p-6 rounded-xl border border-purple-500/10 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-gray-400 text-xs font-bold uppercase tracking-wider">PPPoE Active Users</h3>
+                    <span class="bg-purple-950 text-purple-400 text-[10px] font-mono px-2 py-0.5 rounded border border-purple-500/20">LIVE</span>
+                </div>
+                <div class="flex items-baseline mt-4">
+                    <span id="pppoe-count" class="text-5xl font-black bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent tracking-tight">0</span>
+                    <span class="text-gray-500 font-bold ml-2 text-sm uppercase tracking-wider">Users</span>
+                </div>
+                <p class="text-xs text-gray-500 mt-5">Status: Monitoring Engine Active</p>
+            </div>
+        </div>
+
+        <h2 class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-4">Distribution Interfaces (Download / RX)</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            
+            <div class="bg-[#121824] p-5 rounded-xl border border-blue-500/10 shadow-[0_4px_20px_rgba(0,0,0,0.3)] flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_6px_#3b82f6]"></span>
+                            <h4 id="label-iface-0" class="text-sm font-bold text-white font-mono">CORE - VLAN / 1001 - CBTP</h4>
+                        </div>
+                        <span id="value-iface-0" class="text-xs font-mono text-blue-400 font-bold">0 bps</span>
+                    </div>
+                    <div id="bytes-iface-0" class="text-[11px] font-mono text-gray-500 mb-3 bg-gray-900/40 p-1 rounded border border-gray-800/50 flex justify-between">
+                        <span>RX: 0 B</span><span>TX: 0 B</span>
+                    </div>
+                </div>
+                <div class="h-44 relative">
+                    <canvas id="chart-iface-0"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-[#121824] p-5 rounded-xl border border-red-500/10 shadow-[0_4px_20px_rgba(0,0,0,0.3)] flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_6px_#ef4444]"></span>
+                            <h4 id="label-iface-1" class="text-sm font-bold text-white font-mono">CORE - VLAN / 1002 - METRO JDN</h4>
+                        </div>
+                        <span id="value-iface-1" class="text-xs font-mono text-red-400 font-bold">0 bps</span>
+                    </div>
+                    <div id="bytes-iface-1" class="text-[11px] font-mono text-gray-500 mb-3 bg-gray-900/40 p-1 rounded border border-gray-800/50 flex justify-between">
+                        <span>RX: 0 B</span><span>TX: 0 B</span>
+                    </div>
+                </div>
+                <div class="h-44 relative">
+                    <canvas id="chart-iface-1"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-[#121824] p-5 rounded-xl border border-yellow-500/10 shadow-[0_4px_20px_rgba(0,0,0,0.3)] flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-yellow-500 shadow-[0_0_6px_#eab308]"></span>
+                            <h4 id="label-iface-2" class="text-sm font-bold text-white font-mono">VLAN - UPSTREAM</h4>
+                        </div>
+                        <span id="value-iface-2" class="text-xs font-mono text-yellow-400 font-bold">0 bps</span>
+                    </div>
+                    <div id="bytes-iface-2" class="text-[11px] font-mono text-gray-500 mb-3 bg-gray-900/40 p-1 rounded border border-gray-800/50 flex justify-between">
+                        <span>RX: 0 B</span><span>TX: 0 B</span>
+                    </div>
+                </div>
+                <div class="h-44 relative">
+                    <canvas id="chart-iface-2"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 gap-6 mb-8">
+            <div class="bg-[#121824] p-6 rounded-xl border border-emerald-500/10 shadow-[0_4px_25px_rgba(0,0,0,0.4)]">
+                <div class="flex justify-between items-center mb-2">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_10px_#10b981]"></span>
+                        <h4 id="label-iface-3" class="text-base font-bold text-white uppercase font-mono tracking-wider">LINK - CORE FTTH BACKBONE</h4>
+                    </div>
+                    <div id="value-iface-3" class="text-xs font-mono font-bold bg-gray-900/50 px-3 py-1 rounded border border-gray-800">
+                        RX: 0 bps | TX: 0 bps
+                    </div>
+                </div>
+                <div id="bytes-iface-3" class="text-xs font-mono text-gray-400 mb-4 bg-gray-900/30 px-3 py-1.5 rounded border border-gray-800/60 flex gap-6">
+                    <span><span class="text-blue-400 font-bold">Total RX:</span> 0 B</span>
+                    <span><span class="text-red-400 font-bold">Total TX:</span> 0 B</span>
+                </div>
+                <div class="h-60 relative">
+                    <canvas id="chart-iface-3"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-[#121824] rounded-xl border border-gray-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)] overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-800/80 bg-[#161f2e]">
+                <h3 class="text-base font-bold text-white tracking-wide">Active PPPoE Sessions</h3>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-[#1a2333] text-gray-400 text-xs font-bold uppercase tracking-wider border-b border-gray-800">
+                            <th class="p-4">User / Pelanggan</th>
+                            <th class="p-4">IP Address</th>
+                            <th class="p-4">Caller ID / MAC Address</th>
+                            <th class="p-4 text-right">Uptime</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pppoe-table-body" class="divide-y divide-gray-800/60 text-sm text-gray-300 font-mono">
+                        <tr>
+                            <td colspan="4" class="p-8 text-center text-gray-600 animate-pulse">Menghubungkan ke core driver...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const maxDataPoints = 15;
+        const initialLabels = Array(maxDataPoints).fill('');
+
+        const monitoredInterfaces = ['CORE - VLAN / 1001 - CBTP', 'CORE - VLAN / 1002 -  METRO JDN', 'VLAN - UPSTREAM', 'LINK -  CORE FTTH BACKBONE'];
+        
+        const chartColors = [
+            { border: '#3b82f6', bg: 'rgba(59, 130, 246, 0.04)' }, 
+            { border: '#ef4444', bg: 'rgba(239, 68, 68, 0.04)' },  
+            { border: '#eab308', bg: 'rgba(234, 210, 8, 0.04)' },   
+            { border: '#10b981', bg: 'rgba(16, 185, 129, 0.04)' }  
+        ];
+
+        const charts = [];
+
+        function formatMegaBytes(bytes) {
+            if (!bytes || isNaN(bytes)) return '0 MB';
+            const mb = bytes / (1024 * 1024);
+            if (mb >= 1024) return (mb / 1024).toFixed(1) + ' GB';
+            return mb.toFixed(0) + ' MB';
+        }
+
+        function formatSpeedText(value) {
+            if (value >= 1000000000) return (value / 1000000000).toFixed(1) + ' Gbps';
+            if (value >= 1000000) return (value / 1000000).toFixed(1) + ' Mbps';
+            if (value >= 1000) return (value / 1000).toFixed(0) + ' Kbps';
+            return value + ' bps';
+        }
+
+        function formatBytes(bytes) {
+            const currentBytes = Number(bytes); 
+            if (currentBytes === 0 || !currentBytes || isNaN(currentBytes)) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
+            const i = Math.floor(Math.log(currentBytes) / Math.log(k));
+            return parseFloat((currentBytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        monitoredInterfaces.forEach((iface, index) => {
+            const labelEl = document.getElementById(`label-iface-${index}`);
+            if (labelEl) labelEl.innerText = iface; 
+            
+            const ctx = document.getElementById(`chart-iface-${index}`).getContext('2d');
+            
+            let datasets = [];
+            if (index === 3) {
+                datasets = [
+                    {
+                        label: 'Download (RX)',
+                        data: Array(maxDataPoints).fill(0),
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.02)',
+                        borderWidth: 2.5,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 0
+                    },
+                    {
+                        label: 'Upload (TX)',
+                        data: Array(maxDataPoints).fill(0),
+                        borderColor: '#ef4444',
+                        backgroundColor: 'rgba(239, 68, 68, 0.02)',
+                        borderWidth: 2.5,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 0
+                    }
+                ];
+            } else {
+                datasets = [{
+                    label: 'Download (RX)',
+                    data: Array(maxDataPoints).fill(0),
+                    borderColor: chartColors[index].border,
+                    backgroundColor: chartColors[index].bg,
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 0
+                }];
+            }
+
+            charts[index] = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: initialLabels,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { display: false },
+                        y: {
+                            grid: { color: 'rgba(75, 85, 99, 0.07)' },
+                            ticks: {
+                                color: '#52525b',
+                                font: { size: 10, family: 'monospace' },
+                                callback: formatSpeedText
+                            }
+                        }
+                    },
+                    plugins: { 
+                        legend: { 
+                            display: index === 3, 
+                            position: 'top',
+                            labels: { color: '#9ca3af', font: { size: 10 } }
+                        } 
+                    }
+                }
+            });
+        });
+
+        async function fetchResources() {
+            try {
+                const response = await fetch('/api/resource');
+                const result = await response.json();
+                if (result.success) {
+                    const data = result.data;
+                    document.getElementById('cpu-text').innerText = data.cpuLoad + '%';
+                    document.getElementById('cpu-bar').style.width = data.cpuLoad + '%';
+                    
+                    document.getElementById('memory-text').innerText = formatMegaBytes(data.freeMemory);
+                    document.getElementById('memory-total').innerText = 'Total: ' + formatMegaBytes(data.totalMemory);
+                    
+                    document.getElementById('router-model').innerText = data.boardName.toUpperCase() + ' (v' + data.version + ')';
+                    document.getElementById('router-uptime').innerText = 'Uptime: ' + data.uptime;
+                }
+            } catch (err) {
+                console.error("Resource error:", err);
+                document.getElementById('router-model').innerText = 'OFFLINE';
+            }
+        }
+
+        async function fetchAllTraffic() {
+            try {
+                const requests = monitoredInterfaces.map(iface => 
+                    fetch(`/api/traffic/${encodeURIComponent(iface)}`).then(res => res.json())
+                );
+                
+                const results = await Promise.all(requests);
+                
+                results.forEach((result, index) => {
+                    if (result.success && result.data) {
+                        const rxValue = result.data.rx || 0;
+                        const txValue = result.data.tx || 0;
+                        
+                        // Fallback deteksi key jikalau API menggunakan nama properti yang berbeda
+                        const rxBytes = result.data.rxBytes || result.data.rxbytes || 0;
+                        const txBytes = result.data.txBytes || result.data.txbytes || 0;
+                        
+                        const bytesEl = document.getElementById(`bytes-iface-${index}`);
+                        if (bytesEl) {
+                            if (index === 3) {
+                                bytesEl.innerHTML = `<span><span class="text-blue-400 font-bold">Total RX:</span> ${formatBytes(rxBytes)}</span> <span class="ml-4"><span class="text-red-400 font-bold">Total TX:</span> ${formatBytes(txBytes)}</span>`;
+                            } else {
+                                bytesEl.innerHTML = `<span>RX: ${formatBytes(rxBytes)}</span><span>TX: ${formatBytes(txBytes)}</span>`;
+                            }
+                        }
+
+                        if (index === 3) {
+                            document.getElementById(`value-iface-${index}`).innerText = `RX: ${formatSpeedText(rxValue)} | TX: ${formatSpeedText(txValue)}`;
+                            
+                            charts[index].data.datasets[0].data.push(rxValue);
+                            charts[index].data.datasets[0].data.shift();
+                            
+                            charts[index].data.datasets[1].data.push(txValue);
+                            charts[index].data.datasets[1].data.shift();
+                        } else {
+                            document.getElementById(`value-iface-${index}`).innerText = formatSpeedText(rxValue);
+
+                            charts[index].data.datasets[0].data.push(rxValue);
+                            charts[index].data.datasets[0].data.shift();
+                        }
+                        
+                        charts[index].update('none'); 
+                    }
+                });
+            } catch (err) {
+                console.error("Traffic error:", err);
+            }
+        }
+
+        async function fetchPppoeActive() {
+            try {
+                const response = await fetch('/api/pppoe/active');
+                const result = await response.json();
+                if (result.success) {
+                    document.getElementById('pppoe-count').innerText = result.totalActive;
+                    const tbody = document.getElementById('pppoe-table-body');
+                    tbody.innerHTML = '';
+
+                    if (result.users.length === 0) {
+                        tbody.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-gray-600">Tidak ada user PPPoE aktif</td></tr>`;
+                        return;
+                    }
+
+                    result.users.forEach(user => {
+                        const tr = document.createElement('tr');
+                        tr.className = 'hover:bg-[#1a2333]/40 border-b border-gray-800/40 transition-colors duration-150';
+                        tr.innerHTML = `
+                            <td class="p-4 font-bold text-blue-400">${user.name}</td>
+                            <td class="p-4 text-gray-300">${user.address || '-'}</td>
+                            <td class="p-4 text-gray-500 text-xs">${user.callerId || '-'}</td>
+                            <td class="p-4 text-right text-red-400 font-semibold">${user.uptime}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                }
+            } catch (err) {
+                console.error("PPPoE error:", err);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchResources();
+            fetchAllTraffic();
+            fetchPppoeActive();
+
+            setInterval(fetchAllTraffic, 2000); 
+            setInterval(fetchResources, 6000);   
+            setInterval(fetchPppoeActive, 10000); 
+
+            setTimeout(() => {
+                window.location.reload();
+            }, 300000);
+        });
+        // Tambahkan satu variabel global di atas fungsi fetchAllTraffic untuk menyimpan hitungan lokal
+const localByteCounters = monitoredInterfaces.map(() => ({ rx: 0, tx: 0 }));
+
+async function fetchAllTraffic() {
+    try {
+        const requests = monitoredInterfaces.map(iface => 
+            fetch(`/api/traffic/${encodeURIComponent(iface)}`).then(res => res.json())
+        );
+        
+        const results = await Promise.all(requests);
+        
+        results.forEach((result, index) => {
+            if (result.success && result.data) {
+                const rxValue = result.data.rx || 0; // dalam satuan bps
+                const txValue = result.data.tx || 0; // dalam satuan bps
+                
+                // --- TRICK KALKULASI LOKAL JIKA BACKEND KOSONG ---
+                // Mengubah bps (bit per second) ke Byte dengan dibagi 8, 
+                // lalu dikali 2 karena interval fetch berjalan setiap 2 detik.
+                let rxBytes = result.data.rxBytes || result.data.rxbytes || 0;
+                let txBytes = result.data.txBytes || result.data.txbytes || 0;
+                
+                if (rxBytes === 0 && txBytes === 0) {
+                    localByteCounters[index].rx += (rxValue / 8) * 2;
+                    localByteCounters[index].tx += (txValue / 8) * 2;
+                    rxBytes = localByteCounters[index].rx;
+                    txBytes = localByteCounters[index].tx;
+                }
+                // -------------------------------------------------
+
+                const bytesEl = document.getElementById(`bytes-iface-${index}`);
+                if (bytesEl) {
+                    if (index === 3) {
+                        bytesEl.innerHTML = `<span><span class="text-blue-400 font-bold">Total RX:</span> ${formatBytes(rxBytes)}</span> <span class="ml-4"><span class="text-red-400 font-bold">Total TX:</span> ${formatBytes(txBytes)}</span>`;
+                    } else {
+                        bytesEl.innerHTML = `<span>RX: ${formatBytes(rxBytes)}</span><span>TX: ${formatBytes(txBytes)}</span>`;
+                    }
+                }
+
+                if (index === 3) {
+                    document.getElementById(`value-iface-${index}`).innerText = `RX: ${formatSpeedText(rxValue)} | TX: ${formatSpeedText(txValue)}`;
+                    
+                    charts[index].data.datasets[0].data.push(rxValue);
+                    charts[index].data.datasets[0].data.shift();
+                    
+                    charts[index].data.datasets[1].data.push(txValue);
+                    charts[index].data.datasets[1].data.shift();
+                } else {
+                    document.getElementById(`value-iface-${index}`).innerText = formatSpeedText(rxValue);
+
+                    charts[index].data.datasets[0].data.push(rxValue);
+                    charts[index].data.datasets[0].data.shift();
+                }
+                
+                charts[index].update('none'); 
+            }
+        });
+    } catch (err) {
+        console.error("Traffic error:", err);
+    }
+}
+    </script>
+</body>
+</html>
